@@ -31,13 +31,38 @@ ALLOWED_HOSTS = ['127.0.0.1', 'marketskrap.com', 'www.marketskrap.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+    ]
+# marketskrap/marketskrap/settings.py
+# Jazzmin settings
+# JAZZMIN_SETTINGS = {
+#     "site_title": "MarketSkrap Admin",
+#     "site_header": "MarketSkrap",
+#     "welcome_sign": "Welcome to the MarketSkrap Admin Portal",
+#     "show_sidebar": True,
+#     "navigation_expanded": True,
+#     "hide_apps": [],
+#     "hide_models": [],
+#     "order_with_respect_to": ["auth", "marketskrap", "app_name"],
+#     "icons": {
+#         "auth": "fas fa-users-cog",
+#         "auth.user": "fas fa-user",
+#         "auth.Group": "fas fa-users",
+#     },
+#     "related_modal_active": True,
+#     "custom_css": None,
+#     "custom_js": None,
+#     "show_ui_builder": True,
+#     "changeform_format": "horizontal_tabs",
+#     "changeform_format_overrides": {"auth.user": "vertical_tabs"},
+# }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,7 +79,9 @@ ROOT_URLCONF = 'marketskrap.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'msweb'),],
+        'DIRS': [os.path.join(BASE_DIR, 'msweb'),
+                 os.path.join(BASE_DIR, 'msweb/jazzmin/templates/admin'),
+                 ],
         'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
