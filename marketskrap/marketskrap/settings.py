@@ -31,7 +31,8 @@ ALLOWED_HOSTS = ['127.0.0.1', 'marketskrap.com', 'www.marketskrap.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    'jet.dashboard',
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     ]
-# marketskrap/marketskrap/settings.py
-# Jazzmin settings
+# marketskrap/marketskrap/settings.py 
+# Jazzmin settings ['jazzmin',]
 # JAZZMIN_SETTINGS = {
 #     "site_title": "MarketSkrap Admin",
 #     "site_header": "MarketSkrap",
@@ -80,7 +81,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'msweb'),
-                 os.path.join(BASE_DIR, 'msweb/jazzmin/templates/admin'),
+                 os.path.join(BASE_DIR, 'msweb/jet/dashboard/templates/admin'),
                  ],
         'APP_DIRS': False,
         'OPTIONS': {
