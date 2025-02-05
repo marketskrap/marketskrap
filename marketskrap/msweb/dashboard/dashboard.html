@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/dashboard.css' %}">
+    <style>
+        .tiles {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 20px;
+        }
+        .tile {
+            flex: 1;
+            background: linear-gradient(135deg, white, #3498db);
+            color: black;
+            text-align: center;
+            padding: 60px;
+            border-radius: 15px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .tile:hover {
+            transform: scale(1.05);
+        }
+        .upload-container {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: auto;
+        }
+        .upload-container input, .upload-container a {
+            display: block;
+            margin: 20px auto;
+        }
+        .upload-container button {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .upload-container button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body class="dashboard">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="{% static 'assets/img/logo.png' %}" alt="Logo" class="logo">
+            <h2>Marketing Dashboard</h2>
+        </div>
+        <ul>
+            <li> <a href="#"><i class="fas fa-chart-line"></i> Analytics</a> </li>
+            <li id="campaign-section"> <a href="#"><i class="fas fa-envelope"></i> Campaigns</a> </li>
+            <li id="suppress-list"> <a href="#"><i class="fas fa-ban"></i> Suppress List</a> </li>
+            <li> <a href="#"><i class="fas fa-cog"></i> Settings</a> </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h2>Welcome, User!</h2>
+            <div class="header-right">
+                <img src="{% static 'assets/img/logo.png' %}" alt="Profile" class="profile-thumbnail">
+                <a href="#" class="btn logout-btn">Logout</a>
+            <!-- <button id="dark-mode-toggle" class="btn">Toggle Dark Mode</button> -->
+            </div>
+        </div>
+
+        <div id="campaign-content" class="tiles" style="display: none;">
+            <div class="tile" id="add-bounce">Add Bounce</div>
+            <div class="tile" id="add-master">Add Master</div>
+            <div class="tile" id="email-marketing">Email Marketing</div>
+            <div class="tile" id="results">Results</div>
+        </div>
+
+        <div id="upload-container" class="upload-container" style="display: none;">
+            <h2>Upload Email File</h2>
+            <a href="/static/reposit/sample_mail.csv" download>Download Sample CSV</a>
+            <input type="file" id="email-file" accept=".csv">
+            <button onclick="processMasterFile()">Upload & Process</button>
+            <p id="upload-status"></p>
+        </div>
+
+        <div id="suppress-content" class="data-table" style="display: none;"></div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const campaignSection = document.getElementById('campaign-section');
+    const campaignContent = document.getElementById('campaign-content');
+    const suppressList = document.getElementById('suppress-list');
+    const suppressContent = document.getElementById('suppress-content');
+    const uploadContainer = document.getElementById('upload-container');
+
+    if (campaignSection) {
+        campaignSection.addEventListener('click', function() {
+            console.log("Campaign Clicked");
+            suppressContent.style.display = 'none'; // Hide suppress list
+            uploadContainer.style.display = 'none'; // Hide upload container
+            campaignContent.style.display = 'flex'; // Show campaign section
+        });
+    }
+
+    if (suppressList) {
+        suppressList.addEventListener('click', function() {
+            console.log("Suppress List Clicked");
+            campaignContent.style.display = 'none'; // Hide campaign section
+            uploadContainer.style.display = 'none'; // Hide upload container
+            suppressContent.style.display = 'block'; // Show suppress list
+        });
+    }
+
+    const addMaster = document.getElementById('add-master');
+    if (addMaster) {
+        addMaster.addEventListener('click', function() {
+            console.log("Add Master Clicked");
+            campaignContent.style.display = 'none'; // Hide campaign section
+            suppressContent.style.display = 'none'; // Hide suppress list
+            uploadContainer.style.display = 'block'; // Show upload container
+        });
+    }
+});
+
+
+    function processMasterFile() {
+    const fileInput = document.getElementById('email-file');
+    if (fileInput.files.length === 0) {
+        alert("Please select a CSV file.");
+        return;
+    }
+
+    const file = fileInput.files[0];
+
+    // ✅ Allow only CSV files
+    if (!file.name.endsWith('.csv')) {
+        alert("Only CSV files are allowed.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    document.getElementById('upload-status').innerText = `Uploading file: ${file.name}`;
+
+    fetch('/upload_file/', { method: 'POST', body: formData })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('upload-status').innerText = "File uploaded successfully!";
+
+            // ✅ Show results in a popup
+            alert(`
+                ✅ Upload Successful!  
+                📄 File: ${file.name}  
+                📌 Total Uploaded: ${data.total_uploaded}  
+                ⚠️ Duplicates: ${data.total_duplicates}  
+                ✅ Added to System: ${data.total_added}  
+            `);
+        } else {
+            document.getElementById('upload-status').innerText = "Upload Error: " + data.error;
+            alert("Upload Error: " + data.error);
+        }
+    })
+    .catch(error => {
+        document.getElementById('upload-status').innerText = "Error uploading file.";
+        alert("Error uploading file.");
+    });
+}
+
+    </script>
+</body>
+</html>

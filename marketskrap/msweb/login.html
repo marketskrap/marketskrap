@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Marketskrap Login</title>
+  <link rel="stylesheet" href="{% static 'assets/css/login1.css' %}">
+</head>
+<body>
+    <section class="container">
+        <div class="login-container">
+            <div class="circle circle-one"></div>
+            <div class="form-container">
+                <h1 class="opacity">LOGIN</h1>
+                                <img src="{% static 'assets/img/namaste1.png' %}" alt="illustration" class="illustration" />
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <input type="text" name="username" placeholder="USERNAME" required />
+                    <input type="password" name="password" placeholder="PASSWORD" required />
+                    <button type="submit" class="opacity">SUBMIT</button>
+                </form>
+                <div class="register-forget opacity">
+                    <a href="/admin">REGISTER</a>
+                    <a href="">FORGOT PASSWORD</a>
+                </div>
+            </div>
+            <div class="circle circle-two"></div>
+        </div>
+        <div class="theme-btn-container"></div>
+    </section>
+  <script src="{% static 'assets/js/script1.js' %}"></script>
+</body>
+</html>
