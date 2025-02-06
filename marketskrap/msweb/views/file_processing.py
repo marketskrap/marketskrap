@@ -13,7 +13,7 @@ UPLOAD_DIR = "/var/www/marketskrap.com/marketskrap/msweb/reposit"
 db_settings = settings.DATABASES['default']
 engine = create_engine(f"mysql+pymysql://{db_settings['USER']}:{db_settings['PASSWORD']}@{db_settings['HOST']}/{db_settings['NAME']}")
 
-EXPECTED_COLUMNS = ['email_ID', 'first_Name', 'last_Name', 'date_of_addition', 'source', 'email_status']
+EXPECTED_COLUMNS = ['email_ID', 'mobile_number', 'first_Name', 'last_Name', 'date_of_addition', 'source', 'email_status']
 
 @csrf_exempt
 def upload_file(request):

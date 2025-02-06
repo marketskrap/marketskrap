@@ -13,7 +13,7 @@ django.setup()
 
 db_settings = settings.DATABASES['default']
 BASE_PATH = '/var/www/marketskrap.com/marketskrap/msweb/reposit'
-EXPECTED_COLUMNS = ['email_ID', 'first_Name', 'last_Name', 'date_of_addition', 'source', 'email_status']
+EXPECTED_COLUMNS = ['email_ID','mobile_number', 'first_Name', 'last_Name', 'date_of_addition', 'source', 'email_status']
 
 def validate_csv(file_path):
     try:
