@@ -37,7 +37,7 @@ def upload_file(request):
             with open(file_path, 'wb+') as destination:
                 for chunk in uploaded_file.chunks():
                     destination.write(chunk)
-
+                os.chmod(file_path, 0o777)
             # ✅ Process the CSV file in Django (no need for add_mail.py)
             return process_csv(file_path)
 
